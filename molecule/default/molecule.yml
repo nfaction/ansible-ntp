@@ -7,7 +7,7 @@ lint:
   name: yamllint
 platforms:
   - name: ntp-instance
-    image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian9}-ansible:latest"
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian10}-ansible:${MOLECULE_TAG:-latest}"
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
@@ -18,7 +18,22 @@ provisioner:
   lint:
     name: ansible-lint
     options:
-      x: ["ANSIBLE0013"]
+      x: ["106", "305", "306"]
+scenario:
+  name: default
+  test_sequence:
+    - destroy
+    - dependency
+    - prepare
+    # - lint
+    - syntax
+    - create
+    - converge
+    - idempotence
+    - side_effect
+    # - verify
+    - destroy
+Scenario: 'default'
 verifier:
   name: testinfra
   lint:
