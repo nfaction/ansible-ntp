@@ -5,22 +5,9 @@
 - name: gather os specific variables
   include_vars: "{{ item }}"
   with_first_found:
-    - files:
-        - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-        - "{{ ansible_distribution }}.yml"
-        - "{{ ansible_os_family }}.yml"
-  tags:
-    - vars
-    - install
-
-- name: gather other os specific variables
-  include_vars: "{{ item }}"
-  with_first_found:
-    - files:
-        - "{{ os_vars_dir }}/{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-        - "{{ os_vars_dir }}/{{ ansible_distribution }}.yml"
-        - "{{ os_vars_dir }}/{{ ansible_os_family }}.yml"
-      skip: true
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
   tags:
     - vars
     - install
@@ -44,7 +31,7 @@
 - name: update system date manually
   shell: ntpdate 1.us.pool.ntp.org
   when:
-    - ntp_installed.stat.exists == False
+    - not ntp_installed.stat.exists | bool
 
 - name: detect if running on bare metal hardware
   shell: "dmidecode -t system | grep 'Product' | awk '{ print $3 }'"
@@ -56,6 +43,8 @@
 # Only run if on a hardware system. i.e. non-vm
 - name: update hardware clock manually
   shell: hwclock --systohc
+  args:
+    executable: /bin/bash
   when:
     - not ntp_installed.stat.exists | bool
     - not ntp_on_hardware.stdout == "BHYVE"
@@ -65,6 +54,7 @@
   template:
     src: "{{ item }}"
     dest: "{{ ntp_config }}"
+    mode: 0655
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.ntp.conf.j2"
     - "{{ ansible_distribution }}.ntp.conf.j2"
