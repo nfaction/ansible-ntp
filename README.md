@@ -1,5 +1,5 @@
 # ansible-ntp
 
-[![Build Status](https://travis-ci.org/nfaction/ansible-ntp.svg?branch=master)](https://travis-ci.org/nfaction/ansible-ntp)
+[![Ansible Molecule Test Matrix](https://github.com/nfaction/ansible-ntp/actions/workflows/molecule.yml/badge.svg)](https://github.com/nfaction/ansible-ntp/actions/workflows/molecule.yml)
 
 Role to configure NTP

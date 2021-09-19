@@ -1,6 +1,6 @@
 ---
 
 ntp_packages:
-  - python-apt
+  - python3-apt
   - ntp
 ntp_service: ntp
