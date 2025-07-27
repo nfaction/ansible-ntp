@@ -46,6 +46,7 @@
   changed_when: false
   when:
     - not ntp_installed.stat.exists | bool
+    - ntp_sync_to_hardware_clock | bool
 
 # Only run if on a hardware system. i.e. non-vm
 - name: update hardware clock manually
@@ -56,6 +57,7 @@
     - not ntp_installed.stat.exists | bool
     - not ntp_on_hardware.stdout == "BHYVE"
     - not ntp_on_hardware.stdout == "KVM"
+    - ntp_sync_to_hardware_clock | bool
 
 - name: configure ntp
   template:

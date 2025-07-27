@@ -3,3 +3,4 @@
   hosts: all
   roles:
     - role: ansible-ntp
+      ntp_sync_to_hardware_clock: false
