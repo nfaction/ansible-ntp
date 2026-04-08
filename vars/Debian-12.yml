@@ -1,0 +1,6 @@
+ntp_packages:
+  - python3-apt
+  - ntpsec
+  - ntpsec-ntpdate
+ntp_service: ntpsec
+ntp_config: /etc/ntpsec/ntp.conf
