@@ -36,7 +36,7 @@
   changed_when: false
 
 - name: update system date manually
-  shell: ntpdate 1.us.pool.ntp.org
+  shell: ntpdate 1.north-america.pool.ntp.org
   when:
     - not ntp_installed.stat.exists | bool
 
